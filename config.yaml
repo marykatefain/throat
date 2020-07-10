@@ -1,8 +1,3 @@
-# Any value in this file can be overridden by an environment variable
-# named using the keys, in upper case, joined by underscores.  So for
-# example, if the environment variable $SITE_NAME is set, its value
-# will be used instead of the site name declared below.
-
 site:
   name: 'Throat'
   # Lema shown in the page's title
@@ -21,14 +16,6 @@ site:
   # (by default it's only admins and users authorized through a metadata key)
   allow_uploads: False
 
-  # Allow chat access for all users
-  # If True, each user will have the option of disabling chat for themselves
-  enable_chat: True
-
-  # Allow all users to view the site log
-  # If False, only Admin can view the sitelog
-  sitelog_public: True
-
   # Amount of time in seconds the post author can edit a post's title after the post
   # was created. Set to zero to disable title editing (default is 5 minutes)
   title_edit_timeout: 300
@@ -37,9 +24,8 @@ site:
   # Users will be asked to answer one of these security questions before registering
   enable_security_question: False
 
-  # Only allow Admins to create new subs
-  # If True, only admins can create new subs
-  sub_creation_admin_only: False
+  ##If True, only admins can create new subs
+  sub_creation_admin_only: True
 
   # Minimum level a user must have before being able to create a sub.
   # Set to zero to disable sub creation level limits
@@ -51,23 +37,20 @@ site:
   sub_ownership_limit: 20
 
   # Maximum amount of posts a user can create in a single sub in a day
-  daily_sub_posting_limit: 10
+  daily_sub_posting_limit: 100
 
   # Maximum amount of posts a user can create in a single day
   daily_site_posting_limit: 25
 
 app:
-  # host to pass to SocketIO when we start the application
-  host: "localhost"
-
   # URL to a working redis server.
-  # Used for websockets (if enabled)
+  # Used for websockets and caching (if enabled)
   redis_url: 'redis://127.0.0.1:6379'
 
   # Secret key used to encrypt session cookies.
   # You can generate one by using `os.urandom(24)`
   # ///// YOU MUST CHANGE THIS VALUE \\\\\
-  secret_key: 'PUT SOMETHING HERE'
+  secret_key: 'ZNMq7n2peGz4Ka1M24Bt14Q7H6iT4zax9A1PJ5NtbL4Vtt6JE5YT1dkzBT2rj78a'
 
   # Enables debug mode. Always set to False in a production environment
   debug: True
@@ -95,9 +78,6 @@ cache:
   # - 'simple' (only for testing)
   type: 'redis'
 
-  # Redis to use for caching (if enabled)
-  redis_url: 'redis://127.0.0.1:6379'
-
 sendgrid:
   # At the moment this is only used to send password recovery
   # emails.
@@ -123,7 +103,7 @@ database:
   # - MySQLDatabase
   # - PostgresqlDatabase
   # - SqliteDatabase (untested)
-  engine: 'PICK ONE'
+  engine: 'SqliteDatabase'
 
   # Parameters for both MySQL and postgres
   #host: 'localhost'
@@ -131,7 +111,7 @@ database:
   #user: 'polsaker'
   #password: 'throat'
   # Database name
-  #name: 'phuks'
+  name: 'phuks'
 
   # For sqlite:
   #database: '/path/to/sqlite.db'
