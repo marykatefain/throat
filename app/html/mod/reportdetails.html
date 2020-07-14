@@ -209,42 +209,46 @@ Mod |\
           </div>
           <hr>
           <h3>@{_('Report Log:')}</h3>
-          <table class="pure-table">
-              <thead>
-              <tr>
-                  <th>Time</th>
-                  <th>User</th>
-                  <th>Action</th>
-              </tr>
-              </thead>
-              <tbody>
-              @for log in logs:
-              <tr>
-                  <td>
-                      <time-ago datetime="@{log.time.isoformat()}Z">@{log.time.isoformat()}</time-ago>
-                  </td>
-                  <td>
-                      @if log.uid:
-                          @if log.uid.status != 10:
-                              <a href="/u/@{log.uid.name}">@{log.uid.name}</a>\
-                          @else:
-                              @{_('[Deleted]')}
-                          @end
-                      @end
-                  </td>
-                  <td>
-                      @if log.action == 101:
-                        <!-- report opened by user-->
-                      @elif log.action == 102:
-                        <!-- report closed by user -->
-                      @else:
-                          <i>[Type @{log.action}]</i> @{log.desc}
-                      @end
-                  </td>
-              </tr>
-              @end
-              </tbody>
-          </table>
+          @if len(logs) == 0:
+            <p class="helper-text">@{_('No logs have been made yet on this report')}</p>
+          @else:
+            <table class="pure-table">
+                <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                @for log in logs:
+                <tr>
+                    <td>
+                        <time-ago datetime="@{log.time.isoformat()}Z">@{log.time.isoformat()}</time-ago>
+                    </td>
+                    <td>
+                        @if log.uid:
+                            @if log.uid.status != 10:
+                                <a href="/u/@{log.uid.name}">@{log.uid.name}</a>\
+                            @else:
+                                @{_('[Deleted]')}
+                            @end
+                        @end
+                    </td>
+                    <td>
+                        @if log.action == 52:
+                          Report closed
+                        @elif log.action == 53:
+                          Report reopened
+                        @else:
+                            <i>[Type @{log.action}]</i>
+                        @end
+                    </td>
+                </tr>
+                @end
+                </tbody>
+            </table>
+          @end
 
           <hr>
           <div class="mod report related reports">

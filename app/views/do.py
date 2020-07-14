@@ -2293,12 +2293,14 @@ def close_post_report(id, action):
     #check if it changed and return status
     updated_report = SubPostReport.select().where(SubPostReport.id == id).get()
     if (action == 'close') and (updated_report.open == False):
+        misc.create_reportlog(misc.LOG_TYPE_CLOSE_REPORT, current_user.uid, id, type='post')
         return jsonify(status='ok')
 
     elif (action == 'close') and (updated_report.open == True):
         return jsonify(status='error', error=_('Failed to close report'))
 
     elif (action == 'reopen') and (updated_report.open == True):
+        misc.create_reportlog(misc.LOG_TYPE_REOPEN_REPORT, current_user.uid, id, type='post')
         return jsonify(status='ok')
 
     elif (action == 'reopen') and (updated_report.open == False):
@@ -2354,12 +2356,14 @@ def close_comment_report(id, action):
     #check if it changed and return status
     updated_report = SubPostCommentReport.select().where(SubPostCommentReport.id == id).get()
     if (action == 'close') and (updated_report.open == False):
+        misc.create_reportlog(misc.LOG_TYPE_CLOSE_REPORT, current_user.uid, id, type='comment')
         return jsonify(status='ok')
 
     elif (action == 'close') and (updated_report.open == True):
         return jsonify(status='error', error=_('Failed to close report'))
 
     elif (action == 'reopen') and (updated_report.open == True):
+        misc.create_reportlog(misc.LOG_TYPE_REOPEN_REPORT, current_user.uid, id, type='comment')
         return jsonify(status='ok')
 
     elif (action == 'reopen') and (updated_report.open == False):
