@@ -1478,6 +1478,7 @@ LOG_TYPE_USER_UNBAN = 51
 
 LOG_TYPE_CLOSE_REPORT = 52
 LOG_TYPE_REOPEN_REPORT = 53
+LOG_TYPE_CLOSE_RELATED_REPORT = 54
 
 def create_sitelog(action, uid, comment='', link=''):
     SiteLog.create(action=action, uid=uid, desc=comment, link=link).save()
@@ -1489,11 +1490,15 @@ def create_sublog(action, uid, sid, comment='', link='', admin=False, target=Non
 
 
 # `id` is the report id
-def create_reportlog(action, uid, id, type=''):
-    if type == 'post':
+def create_reportlog(action, uid, id, type='', related=False, original_report=''):
+    if type == 'post' and related == False:
         PostReportLog.create(action=action, uid=uid, id=id).save()
-    else:
+    elif type == 'comment' and related == False:
         CommentReportLog.create(action=action, uid=uid, id=id).save()
+    elif type == 'post' and related == True:
+        CommentReportLog.create(action=action, uid=uid, id=id, desc=original_report).save()
+    elif type == 'comment' and related == True:
+        CommentReportLog.create(action=action, uid=uid, id=id, desc=original_report).save()
 
 def is_domain_banned(link):
     bans = SiteMetadata.select().where(SiteMetadata.key == 'banned_domain')

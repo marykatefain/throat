@@ -37,11 +37,11 @@ Mod |\
           <button class="pure-button pure-button-primary btn-editpost disabled">@{_('All related reports are closed')}</button>
         @else:
           @if report['type'] == 'comment':
-            <button class="pure-button pure-button-primary btn-editpost close-related-reports" data-type="@{report['type']}" data-reports="@{related_reports_json}" data-action="close">
+            <button class="pure-button pure-button-primary btn-editpost close-related-reports" data-type="@{report['type']}" data-reports="@{related_reports_json}" data-original="@{report['id']!!s}" data-action="close">
               @{_('Close All Reports for this Comment')}
             </button>
           @else:
-            <button class="pure-button pure-button-primary btn-editpost close-related-reports" data-type="@{report['type']}" data-reports="@{related_reports_json}" data-action="close">
+            <button class="pure-button pure-button-primary btn-editpost close-related-reports" data-type="@{report['type']}" data-reports="@{related_reports_json}" data-original="@{report['id']!!s}" data-action="close">
               @{_('Close All Reports for this Post')}
             </button>
           @end
@@ -240,6 +240,9 @@ Mod |\
                           Report closed
                         @elif log.action == 53:
                           Report reopened
+                        @elif log.action == 54:
+                          @{_('Closed all reports related to: ')}<a href="@{url_for('mod.report_details', sub=report['sub'], type=report['type'], id=log.desc)}">
+                            @{report['type']} @{_('report')} @{log.desc}</a>
                         @else:
                             <i>[Type @{log.action}]</i>
                         @end
