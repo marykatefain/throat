@@ -1,5 +1,5 @@
 @extends("shared/layout.html")
-@require(sub, report, reported_user, related_reports, related_reports_json, banuserform, is_sub_banned, post, comment, subInfo, subMods)
+@require(sub, report, reported_user, related_reports, related_reports_json, banuserform, is_sub_banned, post, comment, subInfo, subMods, logs)
 @def title():
 Mod |\
 @end
@@ -207,6 +207,44 @@ Mod |\
               </span>
             </div>
           </div>
+          <hr>
+          <h3>@{_('Report Log:')}</h3>
+          <table class="pure-table">
+              <thead>
+              <tr>
+                  <th>Time</th>
+                  <th>User</th>
+                  <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              @for log in logs:
+              <tr>
+                  <td>
+                      <time-ago datetime="@{log.time.isoformat()}Z">@{log.time.isoformat()}</time-ago>
+                  </td>
+                  <td>
+                      @if log.uid:
+                          @if log.uid.status != 10:
+                              <a href="/u/@{log.uid.name}">@{log.uid.name}</a>\
+                          @else:
+                              @{_('[Deleted]')}
+                          @end
+                      @end
+                  </td>
+                  <td>
+                      @if log.action == 101:
+                        <!-- report opened by user-->
+                      @elif log.action == 102:
+                        <!-- report closed by user -->
+                      @else:
+                          <i>[Type @{log.action}]</i> @{log.desc}
+                      @end
+                  </td>
+              </tr>
+              @end
+              </tbody>
+          </table>
 
           <hr>
           <div class="mod report related reports">
